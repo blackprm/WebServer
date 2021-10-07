@@ -4,6 +4,7 @@ import com.sinjinsong.webserver.core.enumeration.RequestMethod;
 import com.sinjinsong.webserver.core.exception.base.ServletException;
 import com.sinjinsong.webserver.core.request.Request;
 import com.sinjinsong.webserver.core.response.Response;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -18,7 +19,9 @@ public class DefaultServlet extends HttpServlet {
 
     @Override
     public void service(Request request, Response response) throws ServletException, IOException {
-        if (request.getMethod() == RequestMethod.GET) {
+        if (request.getMethod() == RequestMethod.GET)
+        {
+
             //首页
             if (request.getUrl().equals("/")) {
                 request.setUrl("/index.html");

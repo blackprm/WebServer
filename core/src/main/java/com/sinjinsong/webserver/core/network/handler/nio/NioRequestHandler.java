@@ -11,6 +11,7 @@ import com.sinjinsong.webserver.core.resource.ResourceHandler;
 import com.sinjinsong.webserver.core.response.Response;
 import com.sinjinsong.webserver.core.network.wrapper.SocketWrapper;
 import com.sinjinsong.webserver.core.network.wrapper.nio.NioSocketWrapper;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,7 @@ import java.util.List;
 @Getter
 @Slf4j
 public class NioRequestHandler extends AbstractRequestHandler {
-    
+
     public NioRequestHandler(SocketWrapper socketWrapper, ServletContext servletContext, ExceptionHandler exceptionHandler, ResourceHandler resourceHandler, Request request, Response response) throws ServletNotFoundException, FilterNotFoundException {
         super(socketWrapper, servletContext, exceptionHandler, resourceHandler, request, response);
     }
@@ -43,11 +44,11 @@ public class NioRequestHandler extends AbstractRequestHandler {
             nioSocketWrapper.getSocketChannel().write(responseData);
             List<String> connection = request.getHeaders().get("Connection");
             if (connection != null && connection.get(0).equals("close")) {
-                log.info("CLOSE: 客户端连接{} 已关闭", nioSocketWrapper.getSocketChannel());
+                LogUtil.log.info("CLOSE: 客户端连接{} 已关闭", nioSocketWrapper.getSocketChannel());
                 nioSocketWrapper.close();
             } else {
                 // keep-alive 重新注册到Poller中
-                log.info("KEEP-ALIVE: 客户端连接{} 重新注册到Poller中", nioSocketWrapper.getSocketChannel());
+                LogUtil.log.info("KEEP-ALIVE: 客户端连接{} 重新注册到Poller中", nioSocketWrapper.getSocketChannel());
                 nioSocketWrapper.getNioPoller().register(nioSocketWrapper.getSocketChannel(), false);
             }
         } catch (IOException e) {

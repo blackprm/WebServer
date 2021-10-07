@@ -2,6 +2,7 @@ package com.sinjinsong.webserver.core.network.connector.aio;
 
 import com.sinjinsong.webserver.core.network.endpoint.aio.AioEndpoint;
 import com.sinjinsong.webserver.core.network.wrapper.aio.AioSocketWrapper;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.channels.AsynchronousSocketChannel;
@@ -27,7 +28,7 @@ public class AioAcceptor implements CompletionHandler<AsynchronousSocketChannel,
 
     @Override
     public void failed(Throwable e, Void attachment) {
-        log.info("accept failed...");
+        LogUtil.log.info("accept failed...");
         e.printStackTrace();
     }
 }

@@ -356,13 +356,13 @@ public class ServletContext {
         for (Iterator<Map.Entry<String, HttpSession>> it = sessions.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<String, HttpSession> entry = it.next();
             if (Duration.between(entry.getValue().getLastAccessed(), Instant.now()).getSeconds() >= DEFAULT_SESSION_EXPIRE_TIME) {
-//                log.info("该session {} 已过期", entry.getKey());
+//                LogUtil.log.info("该session {} 已过期", entry.getKey());
                 afterSessionDestroyed(entry.getValue());
                 it.remove();
             }
         }
     }
-    
+
     private void afterSessionDestroyed(HttpSession session) {
         HttpSessionEvent httpSessionEvent = new HttpSessionEvent(session);
         for (HttpSessionListener listener : httpSessionListeners) {
@@ -383,7 +383,7 @@ public class ServletContext {
             listener.requestDestroyed(servletRequestEvent);
         }
     }
-    
+
     public Object getAttribute(String key) {
         return attributes.get(key);
     }

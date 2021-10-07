@@ -3,6 +3,7 @@ package com.sinjinsong.webserver.core.network.endpoint.bio;
 import com.sinjinsong.webserver.core.network.connector.bio.BioAcceptor;
 import com.sinjinsong.webserver.core.network.dispatcher.bio.BioDispatcher;
 import com.sinjinsong.webserver.core.network.endpoint.Endpoint;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -20,21 +21,21 @@ public class BioEndpoint extends Endpoint {
     private BioAcceptor acceptor;
     private BioDispatcher dispatcher;
     private volatile boolean isRunning = true;
-    
+
     @Override
     public void start(int port) {
         try {
             dispatcher = new BioDispatcher();
             server = new ServerSocket(port);
             initAcceptor();
-            log.info("服务器启动");
+            LogUtil.log.info("服务器启动");
         } catch (Exception e) {
             e.printStackTrace();
-            log.info("初始化服务器失败");
+            LogUtil.log.info("初始化服务器失败");
             close();
         }
     }
-    
+
     private void initAcceptor() {
         acceptor = new BioAcceptor(this, dispatcher);
         Thread t = new Thread(acceptor, "bio-acceptor");

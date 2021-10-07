@@ -16,9 +16,9 @@ import java.util.Map;
  */
 @Slf4j
 public class LoginServlet extends HttpServlet {
-    
-    private UserService userService;
 
+    private UserService userService;
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LoginServlet.class);
     public LoginServlet() {
         userService = UserService.getInstance();
     }

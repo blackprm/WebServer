@@ -3,6 +3,7 @@ package com.sinjinsong.webserver.core.response;
 import com.sinjinsong.webserver.core.cookie.Cookie;
 import com.sinjinsong.webserver.core.enumeration.HttpStatus;
 import com.sinjinsong.webserver.core.network.handler.AbstractRequestHandler;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.ByteBuffer;
@@ -58,8 +59,8 @@ public class Response {
     public void addHeader(Header header) {
         headers.add(header);
     }
-    
-    
+
+
     private void buildHeader() {
         //HTTP/1.1 200 OK
         headerAppender.append("HTTP/1.1").append(BLANK).append(status.getCode()).append(BLANK).append(status).append(CRLF);
@@ -91,7 +92,7 @@ public class Response {
         buildHeader();
         buildBody();
     }
-    
+
     /**
      * 返回Response构建后的数据，用于NIO/AIO
      * @return
@@ -121,7 +122,7 @@ public class Response {
      * @param url
      */
     public void sendRedirect(String url) {
-        log.info("重定向至{}", url);
+        LogUtil.log.info("重定向至{}", url);
         addHeader(new Header("Location", url));
         setStatus(HttpStatus.MOVED_TEMPORARILY);
         buildResponse();

@@ -2,6 +2,7 @@ package com.sinjinsong.webserver.core.network.connector.nio;
 
 import com.sinjinsong.webserver.core.network.endpoint.nio.NioEndpoint;
 import com.sinjinsong.webserver.core.network.wrapper.nio.NioSocketWrapper;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class NioPoller implements Runnable {
     private Queue<PollerEvent> events;
     private String pollerName;
     private Map<SocketChannel, NioSocketWrapper> sockets;
-    
+
     public NioPoller(NioEndpoint nioEndpoint, String pollerName) throws IOException {
         this.sockets = new ConcurrentHashMap<>();
         this.nioEndpoint = nioEndpoint;
@@ -41,7 +42,7 @@ public class NioPoller implements Runnable {
      * @param isNewSocket
      */
     public void register(SocketChannel socketChannel, boolean isNewSocket) {
-        log.info("Acceptor将连接到的socket放入 {} 的Queue中", pollerName);
+        LogUtil.log.info("Acceptor将连接到的socket放入 {} 的Queue中", pollerName);
         NioSocketWrapper wrapper;
         if (isNewSocket) {
             // 设置waitBegin
@@ -65,17 +66,17 @@ public class NioPoller implements Runnable {
         events.clear();
         selector.close();
     }
-    
+
     @Override
     public void run() {
-        log.info("{} 开始监听", Thread.currentThread().getName());
+        LogUtil.log.info("{} 开始监听", Thread.currentThread().getName());
         while (nioEndpoint.isRunning()) {
             try {
                 events();
                 if (selector.select() <= 0) {
                     continue;
                 }
-                log.info("select()返回,开始获取当前选择器中所有注册的监听事件");
+                LogUtil.log.info("select()返回,开始获取当前选择器中所有注册的监听事件");
                 //获取当前选择器中所有注册的监听事件
                 for (Iterator<SelectionKey> it = selector.selectedKeys().iterator(); it.hasNext(); ) {
                     SelectionKey key = it.next();
@@ -83,7 +84,7 @@ public class NioPoller implements Runnable {
                     if (key.isReadable()) {
                         //如果"读取"事件已就绪
                         //交由读取事件的处理器处理
-                        log.info("serverSocket读已就绪,准备读");
+                        LogUtil.log.info("serverSocket读已就绪,准备读");
                         NioSocketWrapper attachment = (NioSocketWrapper) key.attachment();
                         if (attachment != null) {
                             processSocket(attachment);
@@ -95,7 +96,7 @@ public class NioPoller implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClosedSelectorException e) {
-                log.info("{} 对应的selector 已关闭", this.pollerName);
+                LogUtil.log.info("{} 对应的selector 已关闭", this.pollerName);
             }
         }
     }
@@ -106,7 +107,7 @@ public class NioPoller implements Runnable {
     }
 
     private boolean events() {
-        log.info("Queue大小为{},清空Queue,将连接到的Socket注册到selector中", events.size());
+        LogUtil.log.info("Queue大小为{},清空Queue,将连接到的Socket注册到selector中", events.size());
         boolean result = false;
         PollerEvent pollerEvent;
         for (int i = 0, size = events.size(); i < size && (pollerEvent = events.poll()) != null; i++) {
@@ -123,23 +124,23 @@ public class NioPoller implements Runnable {
     public String getPollerName() {
         return pollerName;
     }
-    
+
     public void cleanTimeoutSockets() {
         for (Iterator<Map.Entry<SocketChannel, NioSocketWrapper>> it = sockets.entrySet().iterator(); it.hasNext(); ) {
             NioSocketWrapper wrapper = it.next().getValue();
-            log.info("缓存中的socket:{}", wrapper);
+            LogUtil.log.info("缓存中的socket:{}", wrapper);
             if (!wrapper.getSocketChannel().isConnected()) {
-                log.info("该socket已被关闭");
+                LogUtil.log.info("该socket已被关闭");
                 it.remove();
                 continue;
             }
             if (wrapper.isWorking()) {
-                log.info("该socket正在工作中，不予关闭");
+                LogUtil.log.info("该socket正在工作中，不予关闭");
                 continue;
             }
             if (System.currentTimeMillis() - wrapper.getWaitBegin() > nioEndpoint.getKeepAliveTimeout()) {
                 // 反注册
-                log.info("{} keepAlive已过期", wrapper.getSocketChannel());
+                LogUtil.log.info("{} keepAlive已过期", wrapper.getSocketChannel());
                 try {
                     wrapper.close();
                 } catch (IOException e) {
@@ -149,7 +150,7 @@ public class NioPoller implements Runnable {
             }
         }
     }
-    
+
 
     @Data
     @AllArgsConstructor
@@ -158,12 +159,12 @@ public class NioPoller implements Runnable {
 
         @Override
         public void run() {
-            log.info("将SocketChannel的读事件注册到Poller的selector中");
+            LogUtil.log.info("将SocketChannel的读事件注册到Poller的selector中");
             try {
                 if (wrapper.getSocketChannel().isOpen()) {
                     wrapper.getSocketChannel().register(wrapper.getNioPoller().getSelector(), SelectionKey.OP_READ, wrapper);
                 } else {
-                    log.error("socket已经被关闭，无法注册到Poller", wrapper.getSocketChannel());
+                    LogUtil.log.error("socket已经被关闭，无法注册到Poller", wrapper.getSocketChannel());
                 }
             } catch (ClosedChannelException e) {
                 e.printStackTrace();

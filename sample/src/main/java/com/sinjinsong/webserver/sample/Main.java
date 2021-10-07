@@ -1,6 +1,9 @@
 package com.sinjinsong.webserver.sample;
 
 import com.sinjinsong.webserver.core.BootStrap;
+import com.sinjinsong.webserver.core.util.PropertyUtil;
+
+import java.io.InputStream;
 
 /**
  * @author sinjinsong
@@ -8,6 +11,7 @@ import com.sinjinsong.webserver.core.BootStrap;
  */
 public class Main {
     public static void main(String[] args) {
+        final InputStream resourceAsStream = PropertyUtil.class.getClassLoader().getResourceAsStream("server.properties");
         BootStrap.run();
     }
 }

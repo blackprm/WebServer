@@ -3,6 +3,7 @@ package com.sinjinsong.webserver.core.template;
 import com.sinjinsong.webserver.core.enumeration.ModelScope;
 import com.sinjinsong.webserver.core.exception.TemplateResolveException;
 import com.sinjinsong.webserver.core.request.Request;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
@@ -25,7 +26,7 @@ public class TemplateResolver {
         Matcher matcher = regex.matcher(content);
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
-            log.info("{}", matcher.group(1));
+            LogUtil.log.info("{}", matcher.group(1));
             // placeHolder 格式为scope.x.y.z
             // scope值为requestScope,sessionScope,applicationScope
             String placeHolder = matcher.group(1);
@@ -45,7 +46,7 @@ public class TemplateResolver {
             Object value = null;
             // 按照.分隔为数组,格式为[x,y,z]
             String[] segments = key.split("\\.");
-            log.info("key: {} , segments:{}", key,Arrays.toString(segments));
+            LogUtil.log.info("key: {} , segments:{}", key,Arrays.toString(segments));
             switch (scope) {
                 case REQUEST:
                     value = request.getAttribute(segments[0]);
@@ -68,7 +69,7 @@ public class TemplateResolver {
                     throw new TemplateResolveException();
                 }
             }
-            log.info("value:{}", value);
+            LogUtil.log.info("value:{}", value);
             // 如果解析得到的值为null，则将占位符去掉；否则将占位符替换为值
             if (value == null) {
                 matcher.appendReplacement(sb, "");

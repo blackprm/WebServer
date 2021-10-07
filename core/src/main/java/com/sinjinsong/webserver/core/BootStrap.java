@@ -16,14 +16,20 @@ public class BootStrap {
      * 用户程序与服务器的接口
      */
     public static void run() {
+        // TODO 从配置文件中读取端口号
         String port = PropertyUtil.getProperty("server.port");
+
+
         if(port == null) {
             throw new IllegalArgumentException("server.port 不存在");
         }
+        // TODO 从配置文件中获取连接方式的字段
         String connector = PropertyUtil.getProperty("server.connector");
+
         if(connector == null || (!connector.equalsIgnoreCase("bio") && !connector.equalsIgnoreCase("nio") && !connector.equalsIgnoreCase("aio"))) {
             throw new IllegalArgumentException("server.network 不存在或不符合规范");
         }
+
         Endpoint server = Endpoint.getInstance(connector);
         server.start(Integer.parseInt(port));
         Scanner scanner = new Scanner(System.in);

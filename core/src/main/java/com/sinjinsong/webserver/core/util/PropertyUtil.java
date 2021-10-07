@@ -20,29 +20,29 @@ public class PropertyUtil {
     }
 
     private synchronized static void loadProps() {
-        log.info("开始加载properties文件内容.......");
+        LogUtil.log.info("开始加载properties文件内容.......");
         props = new Properties();
         InputStream in = null;
         try {
             in = PropertyUtil.class.getClassLoader().getResourceAsStream("server.properties");
             props.load(in);
         } catch (FileNotFoundException e) {
-            log.error("rpc.properties文件未找到");
+            LogUtil.log.error("rpc.properties文件未找到");
         } catch (IOException e) {
-            log.error("出现IOException");
+            LogUtil.log.error("出现IOException");
         } finally {
             try {
                 if (null != in) {
                     in.close();
                 }
             } catch (IOException e) {
-                log.error("rpc.properties文件流关闭出现异常");
+                LogUtil.log.error("rpc.properties文件流关闭出现异常");
             }
         }
-        log.info("加载properties文件内容完成...........");
-        log.info("properties文件内容：" + props);
+        LogUtil.log.info("加载properties文件内容完成...........");
+        LogUtil.log.info("properties文件内容：" + props);
     }
-    
+
     public static String getProperty(String key) {
         if (null == props) {
             loadProps();

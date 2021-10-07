@@ -11,6 +11,7 @@ import com.sinjinsong.webserver.core.network.wrapper.bio.BioSocketWrapper;
 import com.sinjinsong.webserver.core.request.Request;
 import com.sinjinsong.webserver.core.resource.ResourceHandler;
 import com.sinjinsong.webserver.core.response.Response;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,7 @@ public class BioRequestHandler extends AbstractRequestHandler {
             os.flush();
         } catch (IOException e) {
             e.printStackTrace();
-            log.error("socket closed");
+            LogUtil.log.error("socket closed");
         } finally {
             try {
                 os.close();

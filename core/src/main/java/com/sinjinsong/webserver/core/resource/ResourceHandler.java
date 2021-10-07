@@ -9,6 +9,7 @@ import com.sinjinsong.webserver.core.request.Request;
 import com.sinjinsong.webserver.core.response.Response;
 import com.sinjinsong.webserver.core.template.TemplateResolver;
 import com.sinjinsong.webserver.core.util.IOUtil;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import com.sinjinsong.webserver.core.util.MimeTypeUtil;
 import com.sinjinsong.webserver.core.network.wrapper.nio.NioSocketWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ public class ResourceHandler {
         String url = request.getUrl();
         try {
             if (ResourceHandler.class.getResource(url) == null) {
-                log.info("找不到该资源:{}", url);
+                LogUtil.log.info("找不到该资源:{}", url);
                 throw new ResourceNotFoundException();
             }
             byte[] body = IOUtil.getBytesFromFile(url);

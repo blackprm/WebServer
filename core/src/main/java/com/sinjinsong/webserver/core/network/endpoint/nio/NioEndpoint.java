@@ -6,6 +6,7 @@ import com.sinjinsong.webserver.core.network.connector.nio.NioPoller;
 import com.sinjinsong.webserver.core.network.dispatcher.nio.NioDispatcher;
 import com.sinjinsong.webserver.core.network.endpoint.Endpoint;
 import com.sinjinsong.webserver.core.network.wrapper.nio.NioSocketWrapper;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Slf4j
 public class NioEndpoint extends Endpoint {
-    
+
     private int pollerCount = Math.min(2, Runtime.getRuntime().availableProcessors());
     private ServerSocketChannel server;
     private NioDispatcher nioDispatcher;
@@ -40,12 +41,12 @@ public class NioEndpoint extends Endpoint {
      * 针对keep-alive连接，如果长期没有数据交换则将其关闭
      */
     private IdleConnectionCleaner cleaner;
-    
+
     //********************************初始化*************************************************************
     private void initDispatcherServlet() {
         nioDispatcher = new NioDispatcher();
     }
-    
+
     private void initServerSocket(int port) throws IOException {
         server = ServerSocketChannel.open();
         server.bind(new InetSocketAddress(port));
@@ -73,7 +74,7 @@ public class NioEndpoint extends Endpoint {
         t.setDaemon(true);
         t.start();
     }
-    
+
     /**
      * 初始化IdleSocketCleaner
      */
@@ -81,7 +82,7 @@ public class NioEndpoint extends Endpoint {
         cleaner = new IdleConnectionCleaner(nioPollers);
         cleaner.start();
     }
-    
+
     //************************初始化结束***************************************************************
     @Override
     public void start(int port) {
@@ -91,14 +92,14 @@ public class NioEndpoint extends Endpoint {
             initPoller();
             initAcceptor();
             initIdleSocketCleaner();
-            log.info("服务器启动");
+            LogUtil.log.info("服务器启动");
         } catch (Exception e) {
             e.printStackTrace();
-            log.info("初始化服务器失败");
+            LogUtil.log.info("初始化服务器失败");
             close();
         }
     }
-    
+
     @Override
     public void close() {
         isRunning = false;
@@ -117,7 +118,7 @@ public class NioEndpoint extends Endpoint {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * 调用dispatcher，处理这个读已就绪的客户端连接
      * @param socketWrapper
@@ -125,7 +126,7 @@ public class NioEndpoint extends Endpoint {
     public void execute(NioSocketWrapper socketWrapper) {
         nioDispatcher.doDispatch(socketWrapper);
     }
-    
+
      /**
      * 轮询Poller，实现负载均衡
      * @return
@@ -138,7 +139,7 @@ public class NioEndpoint extends Endpoint {
     public boolean isRunning() {
         return isRunning;
     }
-    
+
     /**
      * 以阻塞方式来接收一个客户端的链接
      * @return
@@ -150,7 +151,7 @@ public class NioEndpoint extends Endpoint {
 
     /**
      * 将Acceptor接收到的socket放到轮询到的一个Poller的Queue中
-     *  
+     *
      * @param socket
      * @return
      */

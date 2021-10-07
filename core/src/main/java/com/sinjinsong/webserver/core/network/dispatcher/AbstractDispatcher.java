@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author sinjinsong
  * @date 2018/5/4
- * 
+ * <p>
  * 所有Dispatcher（请求分发器）的父类
  */
 public abstract class AbstractDispatcher {
@@ -22,7 +22,7 @@ public abstract class AbstractDispatcher {
     protected ExceptionHandler exceptionHandler;
     protected ThreadPoolExecutor pool;
     protected ServletContext servletContext;
-    
+
     public AbstractDispatcher() {
         this.servletContext = WebApplication.getServletContext();
         this.exceptionHandler = new ExceptionHandler();
@@ -37,7 +37,7 @@ public abstract class AbstractDispatcher {
         };
         this.pool = new ThreadPoolExecutor(100, 100, 1, TimeUnit.SECONDS, new ArrayBlockingQueue<>(200), threadFactory, new ThreadPoolExecutor.CallerRunsPolicy());
     }
-    
+
     /**
      * 关闭
      */
@@ -48,6 +48,7 @@ public abstract class AbstractDispatcher {
 
     /**
      * 分发请求
+     *
      * @param socketWrapper
      */
     public abstract void doDispatch(SocketWrapper socketWrapper);

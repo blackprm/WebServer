@@ -8,6 +8,7 @@ import com.sinjinsong.webserver.core.request.Request;
 import com.sinjinsong.webserver.core.response.Response;
 import com.sinjinsong.webserver.core.network.wrapper.SocketWrapper;
 import com.sinjinsong.webserver.core.network.wrapper.nio.NioSocketWrapper;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,14 +28,15 @@ public class NioDispatcher extends AbstractDispatcher {
      * 1、读取数据
      * 2、构造request，response
      * 3、将业务放入到线程池中处理
+     *
      * @param socketWrapper
      */
     @Override
     public void doDispatch(SocketWrapper socketWrapper) {
         NioSocketWrapper nioSocketWrapper = (NioSocketWrapper) socketWrapper;
-        log.info("已经将请求放入worker线程池中");
+        LogUtil.log.info("已经将请求放入worker线程池中");
         ByteBuffer buffer = ByteBuffer.allocate(1024);
-        log.info("开始读取Request");
+        LogUtil.log.info("开始读取Request");
         Request request = null;
         Response response = null;
         try {

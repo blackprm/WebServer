@@ -10,8 +10,9 @@ import lombok.extern.slf4j.Slf4j;
  * @author sinjinsong
  * @date 2018/5/3
  */
-@Slf4j
 public class LogFilter implements Filter {
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LogFilter.class);
     @Override
     public void init() {
         log.info("LogFilter init...");

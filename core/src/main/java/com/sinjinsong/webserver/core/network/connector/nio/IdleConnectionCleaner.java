@@ -1,5 +1,6 @@
 package com.sinjinsong.webserver.core.network.connector.nio;
 
+import com.sinjinsong.webserver.core.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -39,9 +40,9 @@ public class IdleConnectionCleaner implements Runnable {
     @Override
     public void run() {
         for (NioPoller nioPoller : nioPollers) {
-            log.info("Cleaner 检测{} 所持有的Socket中...", nioPoller.getPollerName());
+            LogUtil.log.info("Cleaner 检测{} 所持有的Socket中...", nioPoller.getPollerName());
             nioPoller.cleanTimeoutSockets();
         }
-        log.info("检测结束...");
+        LogUtil.log.info("检测结束...");
     }
 }

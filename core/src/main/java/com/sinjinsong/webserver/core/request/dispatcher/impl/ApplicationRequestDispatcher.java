@@ -9,6 +9,7 @@ import com.sinjinsong.webserver.core.resource.ResourceHandler;
 import com.sinjinsong.webserver.core.response.Response;
 import com.sinjinsong.webserver.core.template.TemplateResolver;
 import com.sinjinsong.webserver.core.util.IOUtil;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import com.sinjinsong.webserver.core.util.MimeTypeUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,13 +28,13 @@ import java.io.IOException;
 @Slf4j
 public class ApplicationRequestDispatcher implements RequestDispatcher {
     private String url;
-    
+
     @Override
     public void forward(Request request, Response response) throws ServletException, IOException {
         if (ResourceHandler.class.getResource(url) == null) {
             throw new ResourceNotFoundException();
         }
-        log.info("forward至 {} 页面",url);
+        LogUtil.log.info("forward至 {} 页面",url);
         String body = TemplateResolver.resolve(new String(IOUtil.getBytesFromFile(url), CharsetProperties.UTF_8_CHARSET),request);
         response.setContentType(MimeTypeUtil.getTypes(url));
         response.setBody(body.getBytes(CharsetProperties.UTF_8_CHARSET));

@@ -3,6 +3,7 @@ package com.sinjinsong.webserver.core.network.connector.bio;
 import com.sinjinsong.webserver.core.network.dispatcher.bio.BioDispatcher;
 import com.sinjinsong.webserver.core.network.endpoint.bio.BioEndpoint;
 import com.sinjinsong.webserver.core.network.wrapper.bio.BioSocketWrapper;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.net.Socket;
 public class BioAcceptor implements Runnable {
     private BioEndpoint server;
     private BioDispatcher dispatcher;
-    
+
     public BioAcceptor(BioEndpoint server,BioDispatcher dispatcher) {
         this.server = server;
         this.dispatcher = dispatcher;
@@ -24,13 +25,13 @@ public class BioAcceptor implements Runnable {
 
     @Override
     public void run() {
-        log.info("开始监听");
+        LogUtil.log.info("开始监听");
         while (server.isRunning()) {
             Socket client;
             try {
                 //TCP的短连接，请求处理完即关闭
                 client = server.accept();
-                log.info("client:{}", client);
+                LogUtil.log.info("client:{}", client);
                 dispatcher.doDispatch(new BioSocketWrapper(client));
             } catch (IOException e) {
                 e.printStackTrace();

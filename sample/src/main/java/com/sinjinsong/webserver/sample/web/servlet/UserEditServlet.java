@@ -14,15 +14,15 @@ import java.io.IOException;
  * @author sinjinsong
  * @date 2018/5/3
  */
-@Slf4j
+
 public class UserEditServlet extends HttpServlet {
     private UserService userService;
-
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(UserEditServlet.class);
     public UserEditServlet() {
         userService = UserService.getInstance();
     }
 
-    
+
     @Override
     public void doGet(Request request, Response response) throws ServletException, IOException {
         User user = userService.findByUsername((String) request.getSession().getAttribute("username"));
@@ -38,7 +38,7 @@ public class UserEditServlet extends HttpServlet {
         user.setRealName(request.getParameter("realName"));
         user.setAge(Integer.valueOf(request.getParameter("age")));
         userService.update(user);
-        
+
         request.setAttribute("user",user);
         request.getRequestDispatcher("/views/user.html").forward(request, response);
     }

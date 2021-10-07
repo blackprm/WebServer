@@ -12,6 +12,7 @@ import com.sinjinsong.webserver.core.resource.ResourceHandler;
 import com.sinjinsong.webserver.core.response.Response;
 import com.sinjinsong.webserver.core.network.wrapper.SocketWrapper;
 import com.sinjinsong.webserver.core.network.wrapper.aio.AioSocketWrapper;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class AioRequestHandler extends AbstractRequestHandler {
     private CompletionHandler readHandler;
-    
+
     public AioRequestHandler(SocketWrapper socketWrapper, ServletContext servletContext, ExceptionHandler exceptionHandler, ResourceHandler resourceHandler, CompletionHandler readHandler, Request request, Response response) throws ServletNotFoundException, FilterNotFoundException {
         super(socketWrapper, servletContext, exceptionHandler, resourceHandler,request,response);
         this.readHandler = readHandler;
@@ -49,14 +50,14 @@ public class AioRequestHandler extends AbstractRequestHandler {
 
             @Override
             public void completed(Long result, Object attachment) {
-                log.info("写入完毕...");
+                LogUtil.log.info("写入完毕...");
                 ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
                 socketChannel.read(byteBuffer, byteBuffer, readHandler);
             }
 
             @Override
             public void failed(Throwable e, Object attachment) {
-                log.info("写入失败...");
+                LogUtil.log.info("写入失败...");
                 e.printStackTrace();
             }
         });

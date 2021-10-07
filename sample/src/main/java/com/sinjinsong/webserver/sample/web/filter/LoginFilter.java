@@ -11,9 +11,9 @@ import lombok.extern.slf4j.Slf4j;
  * @author sinjinsong
  * @date 2018/5/2
  */
-@Slf4j
 public class LoginFilter implements Filter {
 
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LoginFilter.class);
     @Override
     public void init() {
         log.info("LoginFilter init...");

@@ -20,7 +20,7 @@ import java.net.Socket;
  */
 @Slf4j
 public class BioDispatcher extends AbstractDispatcher {
-    
+
     @Override
     public void doDispatch(SocketWrapper socketWrapper) {
         BioSocketWrapper bioSocketWrapper = (BioSocketWrapper) socketWrapper;

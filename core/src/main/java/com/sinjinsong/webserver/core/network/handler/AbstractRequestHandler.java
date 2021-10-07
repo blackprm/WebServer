@@ -13,6 +13,7 @@ import com.sinjinsong.webserver.core.resource.ResourceHandler;
 import com.sinjinsong.webserver.core.response.Response;
 import com.sinjinsong.webserver.core.servlet.Servlet;
 import com.sinjinsong.webserver.core.network.wrapper.SocketWrapper;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -108,7 +109,7 @@ public abstract class AbstractRequestHandler implements FilterChain, Runnable {
                 flushResponse();
             }
         }
-        log.info("请求处理完毕");
+        LogUtil.log.info("请求处理完毕");
     }
 
     /**

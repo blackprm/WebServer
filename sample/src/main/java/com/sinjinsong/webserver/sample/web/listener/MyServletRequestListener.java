@@ -8,9 +8,8 @@ import lombok.extern.slf4j.Slf4j;
  * @author sinjinsong
  * @date 2018/5/3
  */
-@Slf4j
 public class MyServletRequestListener implements ServletRequestListener {
-
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MyServletRequestListener.class);
     @Override
     public void requestDestroyed(ServletRequestEvent sre) {
         log.info("request destroy...");

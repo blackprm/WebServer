@@ -7,6 +7,7 @@ import com.sinjinsong.webserver.core.network.wrapper.SocketWrapper;
 import com.sinjinsong.webserver.core.network.wrapper.aio.AioSocketWrapper;
 import com.sinjinsong.webserver.core.request.Request;
 import com.sinjinsong.webserver.core.response.Response;
+import com.sinjinsong.webserver.core.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ import java.nio.channels.CompletionHandler;
  */
 @Slf4j
 public class AioDispatcher extends AbstractDispatcher {
-    
+
     @Override
     public void doDispatch(SocketWrapper socketWrapper) {
         AioSocketWrapper aioSocketWrapper = (AioSocketWrapper) socketWrapper;
@@ -43,7 +44,7 @@ public class AioDispatcher extends AbstractDispatcher {
 
             @Override
             public void failed(Throwable e, ByteBuffer attachment) {
-                log.error("read failed");
+                LogUtil.log.error("read failed");
                 e.printStackTrace();
             }
         });
