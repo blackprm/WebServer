@@ -11,7 +11,6 @@ import java.io.InputStream;
  */
 public class Main {
     public static void main(String[] args) {
-        final InputStream resourceAsStream = PropertyUtil.class.getClassLoader().getResourceAsStream("server.properties");
         BootStrap.run();
     }
 }

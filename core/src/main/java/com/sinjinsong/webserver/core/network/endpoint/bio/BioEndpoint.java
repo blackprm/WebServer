@@ -17,9 +17,15 @@ import java.net.Socket;
  */
 @Slf4j
 public class BioEndpoint extends Endpoint {
+<<<<<<< Updated upstream
     // 监听socket的服务器实例
     private ServerSocket server;
     // ???
+=======
+    // 服务器Socket
+    private ServerSocket server;
+    //
+>>>>>>> Stashed changes
     private BioAcceptor acceptor;
     // ???
     private BioDispatcher dispatcher;

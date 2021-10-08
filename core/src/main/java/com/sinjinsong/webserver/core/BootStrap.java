@@ -29,7 +29,11 @@ public class BootStrap {
         if(connector == null || (!connector.equalsIgnoreCase("bio") && !connector.equalsIgnoreCase("nio") && !connector.equalsIgnoreCase("aio"))) {
             throw new IllegalArgumentException("server.network 不存在或不符合规范");
         }
+<<<<<<< Updated upstream
         // TODO 启动一个服务器实例
+=======
+        // TODO 根据传入的配置获取服务器实例
+>>>>>>> Stashed changes
         Endpoint server = Endpoint.getInstance(connector);
         server.start(Integer.parseInt(port));
         Scanner scanner = new Scanner(System.in);
