@@ -23,6 +23,7 @@ public class TemplateResolver {
     public static final Pattern regex = Pattern.compile("\\$\\{(.*?)}");
 
     public static String resolve(String content, Request request) throws TemplateResolveException {
+        // 正则表达式
         Matcher matcher = regex.matcher(content);
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {

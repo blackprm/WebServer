@@ -15,7 +15,10 @@ import java.net.Socket;
  */
 @Slf4j
 public class BioAcceptor implements Runnable {
+
+    // 拥有Server
     private BioEndpoint server;
+    // 拥有Dispatcher
     private BioDispatcher dispatcher;
 
     public BioAcceptor(BioEndpoint server,BioDispatcher dispatcher) {
@@ -26,6 +29,7 @@ public class BioAcceptor implements Runnable {
     @Override
     public void run() {
         LogUtil.log.info("开始监听");
+        // TODO 开启一个线程去监听服务端连接
         while (server.isRunning()) {
             Socket client;
             try {

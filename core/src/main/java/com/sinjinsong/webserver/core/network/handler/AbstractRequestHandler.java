@@ -26,13 +26,12 @@ import java.util.List;
  * RequestHandler 的父类，通过父类来复用成员变量和部分方法
  * 不同IO模型的RequestHandler基本是在将Response写回客户端这部分有不同的实现，在这里被设置为了抽象方法
  */
-@Slf4j
-@Getter
+
 public abstract class AbstractRequestHandler implements FilterChain, Runnable {
 
-    protected Request request;
-    protected Response response;
-    protected SocketWrapper socketWrapper;
+    protected Request request; // 请求
+    protected Response response; // 响应
+    protected SocketWrapper socketWrapper; // 客户端socket
     protected ServletContext servletContext;
     protected ExceptionHandler exceptionHandler;
     protected ResourceHandler resourceHandler;
@@ -58,7 +57,7 @@ public abstract class AbstractRequestHandler implements FilterChain, Runnable {
         filters = servletContext.mapFilter(request.getUrl());
     }
 
-    /**
+    /**     
      * 入口
      */
     @Override
@@ -116,4 +115,59 @@ public abstract class AbstractRequestHandler implements FilterChain, Runnable {
      * 响应数据写回到客户端
      */
     public abstract void flushResponse();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public Request getRequest() {
+        return request;
+    }
+
+    public Response getResponse() {
+        return response;
+    }
+
+    public SocketWrapper getSocketWrapper() {
+        return socketWrapper;
+    }
+
+    public ServletContext getServletContext() {
+        return servletContext;
+    }
+
+    public ExceptionHandler getExceptionHandler() {
+        return exceptionHandler;
+    }
+
+    public ResourceHandler getResourceHandler() {
+        return resourceHandler;
+    }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public Servlet getServlet() {
+        return servlet;
+    }
+
+    public List<Filter> getFilters() {
+        return filters;
+    }
+
+    public int getFilterIndex() {
+        return filterIndex;
+    }
+
 }

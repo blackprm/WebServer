@@ -23,9 +23,7 @@ import java.io.OutputStream;
  * Created by SinjinSong on 2017/7/21.
  * Servlet运行容器
  */
-@Setter
-@Getter
-@Slf4j
+
 public class BioRequestHandler extends AbstractRequestHandler {
 
     public BioRequestHandler(SocketWrapper socketWrapper, ServletContext servletContext, ExceptionHandler exceptionHandler, ResourceHandler resourceHandler, Request request, Response response) throws ServletNotFoundException, FilterNotFoundException {
@@ -38,6 +36,7 @@ public class BioRequestHandler extends AbstractRequestHandler {
     @Override
     public void flushResponse() {
         isFinished = true;
+        // 客户端socket
         BioSocketWrapper bioSocketWrapper = (BioSocketWrapper) socketWrapper;
         byte[] bytes = response.getResponseBytes();
         OutputStream os = null;

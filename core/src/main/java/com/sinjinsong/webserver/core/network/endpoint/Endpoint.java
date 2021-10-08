@@ -2,9 +2,11 @@ package com.sinjinsong.webserver.core.network.endpoint;
 
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
- * @author sinjinsong
- * @date 2018/5/4
+ * TODO 一个抽象类 ：可以代表三种不同I/O类型的服务器实现，BIO,NIO,AIO
+ *
  */
 public abstract class Endpoint {
     /**
@@ -19,12 +21,13 @@ public abstract class Endpoint {
     public abstract void close();
 
     /**
-     * 根据传入的bio、nio、aio获取相应的Endpoint实例
+     * TODO 根据配置文件中的connector参数实例化具体的服务器类型
      * @param connector
      * @return
      */
     public static Endpoint getInstance(String connector) {
         StringBuilder sb = new StringBuilder();
+        // TODO 反射的方式
         sb.append("com.sinjinsong.webserver.core.network.endpoint")
                 .append(".")
                 .append(connector)
@@ -32,12 +35,16 @@ public abstract class Endpoint {
                 .append(StringUtils.capitalize(connector))
                 .append("Endpoint");
         try {
-            return (Endpoint) Class.forName(sb.toString()).newInstance();
+            return (Endpoint) Class.forName(sb.toString()).getDeclaredConstructor().newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
         throw new IllegalArgumentException(connector);

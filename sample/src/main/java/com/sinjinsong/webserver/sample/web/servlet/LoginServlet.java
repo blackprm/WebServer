@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by SinjinSong on 2017/7/21.
  */
-@Slf4j
+
 public class LoginServlet extends HttpServlet {
 
     private UserService userService;

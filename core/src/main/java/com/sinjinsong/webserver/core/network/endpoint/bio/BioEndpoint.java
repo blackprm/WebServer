@@ -17,9 +17,14 @@ import java.net.Socket;
  */
 @Slf4j
 public class BioEndpoint extends Endpoint {
+    // 监听socket的服务器实例
     private ServerSocket server;
+    // ???
     private BioAcceptor acceptor;
+    // ???
     private BioDispatcher dispatcher;
+
+    // 应该是拿来优雅的关闭服务器的
     private volatile boolean isRunning = true;
 
     @Override
