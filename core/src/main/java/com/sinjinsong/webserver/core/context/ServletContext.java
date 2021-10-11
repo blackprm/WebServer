@@ -19,6 +19,7 @@ import com.sinjinsong.webserver.core.session.HttpSession;
 import com.sinjinsong.webserver.core.session.IdleSessionCleaner;
 import com.sinjinsong.webserver.core.util.UUIDUtil;
 import com.sinjinsong.webserver.core.util.XMLUtil;
+import jdk.internal.org.jline.utils.Log;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
@@ -217,6 +218,7 @@ public class ServletContext {
         this.filterMapping = new HashMap<>();
         this.matcher = new AntPathMatcher();
         this.idleSessionCleaner = new IdleSessionCleaner();
+        // 定时清除Session
         this.idleSessionCleaner.start();
         this.servletContextListeners = new ArrayList<>();
         this.httpSessionListeners = new ArrayList<>();
@@ -256,16 +258,20 @@ public class ServletContext {
      * @throws InstantiationException
      */
     private void parseConfig() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        // 读取XML文档
         Document doc = XMLUtil.getDocument(ServletContext.class.getResourceAsStream("/web.xml"));
         Element root = doc.getRootElement();
         // 解析servlet
         List<Element> servlets = root.elements("servlet");
+        // servlet名称 => servlet类名
         for (Element servletEle : servlets) {
             String key = servletEle.element("servlet-name").getText();
             String value = servletEle.element("servlet-class").getText();
+
             this.servlets.put(key, new ServletHolder(value));
         }
 
+        // urls => servlet名称
         List<Element> servletMapping = root.elements("servlet-mapping");
         for (Element mapping : servletMapping) {
             List<Element> urlPatterns = mapping.elements("url-pattern");
@@ -275,7 +281,7 @@ public class ServletContext {
             }
         }
 
-        // 解析 filter
+        // filterName => filterClass
         List<Element> filters = root.elements("filter");
         for (Element filterEle : filters) {
             String key = filterEle.element("filter-name").getText();
@@ -283,6 +289,7 @@ public class ServletContext {
             this.filters.put(key, new FilterHolder(value));
         }
 
+        // urls => fileName
         List<Element> filterMapping = root.elements("filter-mapping");
         for (Element mapping : filterMapping) {
             List<Element> urlPatterns = mapping.elements("url-pattern");

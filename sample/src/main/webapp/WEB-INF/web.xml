@@ -29,6 +29,8 @@
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
+        <url-pattern>/login2</url-pattern>
+        <url-pattern>/login3</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -77,4 +79,3 @@
         <listener-class>com.sinjinsong.webserver.sample.web.listener.MyServletRequestListener</listener-class>
     </listener>
 </web-app>
-    
