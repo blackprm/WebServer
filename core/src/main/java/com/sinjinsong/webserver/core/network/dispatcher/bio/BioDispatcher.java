@@ -32,7 +32,7 @@ public class BioDispatcher extends AbstractDispatcher {
         Request request = null;
         Response response = null;
         try {
-            // TODO 讲socket流中的数据保存到一个buf数组中。
+            // TODO socket流中的数据保存到一个buf数组中。
                 BufferedInputStream bin = new BufferedInputStream(socket.getInputStream());
                 byte[] buf = null;
                 try {

@@ -3,6 +3,7 @@ package com.sinjinsong.webserver.core;
 import com.sinjinsong.webserver.core.network.endpoint.Endpoint;
 import com.sinjinsong.webserver.core.util.PropertyUtil;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -18,7 +19,6 @@ public class BootStrap {
     public static void run() {
         // TODO 从配置文件中读取端口号
         String port = PropertyUtil.getProperty("server.port");
-
 
         if(port == null) {
             throw new IllegalArgumentException("server.port 不存在");

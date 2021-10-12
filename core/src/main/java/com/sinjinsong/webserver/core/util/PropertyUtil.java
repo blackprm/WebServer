@@ -13,7 +13,7 @@ import java.util.Properties;
  */
 @Slf4j
 public class PropertyUtil {
-     private static Properties props;
+    private static Properties props;
 
     static {
         loadProps();
